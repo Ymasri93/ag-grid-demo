@@ -29,9 +29,11 @@ for (let i = 0; i <= 30; i++) {
 const gridOptions = {
     columnDefs,
     rowData,
+    // suppressHorizontalScroll: true,
     rowSelection: 'multiple'
 };
 
 const eGridDiv = document.querySelector('#myGrid');
+
 
 new agGrid.Grid(eGridDiv, gridOptions);
