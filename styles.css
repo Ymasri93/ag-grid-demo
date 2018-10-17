@@ -6,3 +6,7 @@ body {
     background-position: 50% 50%;
     margin: 40px;
 }
+
+.ag-header-cell .ag-cell-label-container {
+    text-align: center;
+}
