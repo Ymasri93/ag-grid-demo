@@ -1,3 +1,5 @@
+const draft = { month: 'feb', year: 2016 };
+const draftMonth = draft.month + draft.year.toString().substring(2);
 const years = ['16', '17', '18', '19', '20', '21', '22',];
 const months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
 const objCENTER = {};
@@ -26,12 +28,21 @@ for (const year of years) {
         let cellStyle = {};
         cellStyle = Object.assign(cellStyle, objCENTER);
         // By creating the template on our own we can add the styling we want to the active draft month header / TESTING PHASE
+        let headerTemplate = `<div class="ag-cell-label-container" role="presentation">
+        <span ref="eText" class="ag-header-cell-text" role="columnheader"></span> 
+        </div>`;
+        if (month + year === draftMonth) {
+            headerTemplate = `<div class="ag-cell-label-container active-month-header-container" role="presentation">
+            <span class="active-month-dot">.</span>
+            <span ref="eText" class="ag-header-cell-text" role="columnheader"></span> 
+            </div>`;
+        }
+
         columnDefs.push({
-            headerName: month.toUpperCase(), field: month + year, cellStyle, headerComponentParams: {
+            headerName: month.toUpperCase(), field: month + year, cellStyle, editable: true, headerComponentParams: {
                 template:
-                    `<div class="ag-cell-label-container" role="presentation"> 
-                <span ref="eText" class="ag-header-cell-text" role="columnheader"></span> 
-            </div>`}
+                    headerTemplate
+            }
         })
     }
 }

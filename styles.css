@@ -10,3 +10,17 @@ body {
 .ag-header-viewport .ag-header-cell {
     text-align: center;
 }
+
+.active-month-header-container {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content:center;
+}
+
+.active-month-dot {
+    color: black;
+    font-weight: bolder;
+    line-height: 0;
+    font-family: Roboto;
+    font-size: 40px;
+}
