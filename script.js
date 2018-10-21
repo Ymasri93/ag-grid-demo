@@ -20,13 +20,16 @@ let columnDefs = [{
 }];
 for (const year of years) {
     for (let month of months) {
-        const objCENTER = {};
+        const objectStyle = {};
         const centerKey = 'text-align';
-        objCENTER[centerKey] = 'center';
-        key = 'text-align';
-        objCENTER[key] = 'center';
+        objectStyle[centerKey] = 'center';
+        const textAlignKey = 'text-align';
+        objectStyle[textAlignKey] = 'center';
+        const paddingTopKey = 'padding-top';
+        objectStyle[paddingTopKey] = '15px'
+        // objectStyle.border = 'solid 1px #979797';
         let cellStyle = {};
-        cellStyle = Object.assign(cellStyle, objCENTER);
+        cellStyle = Object.assign(cellStyle, objectStyle);
         // By creating the template on our own we can add the styling we want to the active draft month header / TESTING PHASE
         let headerTemplate = `<div class="ag-cell-label-container" role="presentation">
         <span ref="eText" class="ag-header-cell-text" role="columnheader"></span> 
@@ -39,7 +42,7 @@ for (const year of years) {
         }
 
         columnDefs.push({
-            headerName: month.toUpperCase(), field: month + year, cellStyle, editable: true, headerComponentParams: {
+            headerName: month.toUpperCase(), field: month + year, cellStyle, width: 80,editable: true, headerComponentParams: {
                 template:
                     headerTemplate
             }
@@ -69,6 +72,7 @@ for (let i = 0; i <= 30; i++) {
 const gridOptions = {
     columnDefs,
     rowData,
+    rowHeight: 77,
     enableRangeSelection: true,
     // suppressHorizontalScroll: true,
     rowSelection: 'multiple'
