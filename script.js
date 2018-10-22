@@ -8,15 +8,27 @@ objCENTER[centerKey] = 'center';
 key = 'text-align';
 objCENTER[key] = 'center';
 let cellStyle = {};
-// cellStyle = {...cellStyle, width: '400px'}
 // By creating the template on our own we can add the arrows (for the years) and change the text here / TESTING PHASE
+const template = '<div class="ag-cell-label-container" role="presentation"> <span ref="eText" class="ag-header-cell-text" role="columnheader"></span> </div>';
 let columnDefs = [{
-    headerName: 'Year', field: 'yearAndName', pinned: 'left', width: 400, headerComponentParams: {
-        template:
-            `<div class="ag-cell-label-container" role="presentation"> 
-            <span ref="eText" class="ag-header-cell-text" role="columnheader"></span> 
-        </div>`
-    }, cellStyle,
+    headerName: 'Year',
+    field: 'yearAndName',
+    pinned: 'left',
+    width: 400,
+    headerComponentParams: { template },
+    cellStyle,
+    cellRendererSelector: function (params) {
+        const moodDetails = {
+            component: 'moodCellRenderer'
+        };
+        if (params.data.type === 'CUS'){
+            return moodDetails;
+        }
+        else {
+            //if we return null then no custom cell renderer will be called
+            return null;
+        }
+    }
 }];
 for (const year of years) {
     for (let month of months) {
@@ -27,10 +39,8 @@ for (const year of years) {
         objectStyle[textAlignKey] = 'center';
         const paddingTopKey = 'padding-top';
         objectStyle[paddingTopKey] = '15px'
-        // objectStyle.border = 'solid 1px #979797';
         let cellStyle = {};
         cellStyle = Object.assign(cellStyle, objectStyle);
-        // By creating the template on our own we can add the styling we want to the active draft month header / TESTING PHASE
         let headerTemplate = `<div class="ag-cell-label-container" role="presentation">
         <span ref="eText" class="ag-header-cell-text" role="columnheader"></span> 
         </div>`;
@@ -42,10 +52,11 @@ for (const year of years) {
         }
 
         columnDefs.push({
-            headerName: month.toUpperCase(), field: month + year, cellStyle, width: 80,editable: true, headerComponentParams: {
-                template:
-                    headerTemplate
-            }
+            headerName: month.toUpperCase(),
+            field: month + year,
+            cellStyle, width: 80,
+            editable: true,
+            headerComponentParams: { template: headerTemplate },
         })
     }
 }
@@ -60,8 +71,8 @@ function createShitWord() {
     return text;
 }
 const rowData = [];
-for (let i = 0; i <= 30; i++) {
-    const row = { yearAndName: createShitWord() };
+for (let i = 0; i <= 5; i++) {
+    const row = { yearAndName: createShitWord(), type: (Math.random() < .50) ? 'CUS' : 'GRO' };
     for (const year of years) {
         for (const month of months) {
             row[month + year] = Math.floor(Math.random() * (1000 - 100) + 100);
@@ -74,8 +85,27 @@ const gridOptions = {
     rowData,
     rowHeight: 77,
     enableRangeSelection: true,
-    // suppressHorizontalScroll: true,
-    rowSelection: 'multiple'
+    suppressHorizontalScroll: true,
+    rowSelection: 'multiple',
+    components: {
+        moodCellRenderer: MoodCellRenderer,
+    }
+};
+
+
+function MoodCellRenderer() {
+}
+
+MoodCellRenderer.prototype.init = function (params) {
+    this.eGui = document.createElement('span');
+    if (params.value !== "" || params.value !== undefined || params.value !== null) {
+        var imgForMood = 'https://raw.githubusercontent.com/ag-grid/ag-grid/master/packages/ag-grid-docs/src/images/smiley.png';
+        this.eGui.innerHTML = '<img width="20px" src="' + imgForMood + '" />';
+    }
+};
+
+MoodCellRenderer.prototype.getGui = function () {
+    return this.eGui;
 };
 
 const eGridDiv = document.querySelector('#myGrid');
