@@ -7,6 +7,20 @@ body {
     margin: 40px;
 }
 
+.img-click {
+    box-shadow: 2px 5px 1px 0px #AFAFAF;
+}
+
+.img-click:hover {
+    transform: translate(0, 2.5px);
+    box-shadow: 1px 2.5px .75px 0px #AFAFAF;
+}
+
+.img-click:active {
+    transform: translate(0, 5px);
+    box-shadow: none;
+}
+
 .the-grid {
     font-family: Roboto;
     font-size: 18px;
