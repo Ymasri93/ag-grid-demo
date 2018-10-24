@@ -1,5 +1,5 @@
 const draft = { month: 'mar', year: 2018 };
-let year = '';
+let selectedYear = '';
 const draftMonth = draft.month + draft.year.toString().substring(2);
 const years = ['16', '17', '18', '19', '20', '21', '22',];
 const months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
@@ -63,8 +63,32 @@ for (const year of years) {
         columnDefs.push({
             headerName: month.toUpperCase() + year,
             field: month + year,
-            cellStyle, width: 80,
-            editable: true,
+            cellStyle: function (params) {
+                console.log({...params});
+                let backgroundColor = '#EDECEC';
+                console.log(params.node.id);
+                if (!params.node.lastChild) {
+                    backgroundColor = 'white';
+                }
+                if (params.node.id === "2") {
+                    backgroundColor = '#EDECEC';
+                }
+                if ('20' + year.toString() === selectedYear.toString()) {
+                    return  {...cellStyle, backgroundColor,};
+                } else {
+                    return { ...cellStyle, backgroundColor: '#FCFCFC', color: '#CCCCCC' };
+                }
+            },
+            // cellStyle
+            width: 80,
+            editable: function(params) {
+                console.log({...params})
+                if (params.node.lastChild || params.node.id === "2") {
+                    return false;
+                } else {
+                    return true;
+                }
+            },
             headerComponentParams: { template: headerTemplate },
         })
     }
@@ -94,34 +118,32 @@ const gridOptions = {
     rowData,
     rowHeight: 77,
     enableRangeSelection: true,
-    suppressHorizontalScroll: true,
+    // suppressHorizontalScroll: true,
     rowSelection: 'multiple',
     components: {
         moodCellRenderer: MoodCellRenderer,
     },
     onGridReady: function () {
-        year = draft.year;
-        gridOptions.api.ensureColumnVisible(fiscalYearEnd + year.toString().substring(2));
+        selectedYear = draft.year;
+        gridOptions.api.ensureColumnVisible(fiscalYearEnd + selectedYear.toString().substring(2));
     }
 };
 
 function scrollToNextYear() {
-    let yearNumber = parseInt(year);
-    console.log(yearNumber);
+    let yearNumber = parseInt(selectedYear);
     if (yearNumber < 2022) {
         yearNumber++;
-        year = yearNumber.toString();
-        gridOptions.api.ensureColumnVisible(fiscalYearEnd + year.substring(2));
+        selectedYear = yearNumber.toString();
+        gridOptions.api.ensureColumnVisible(fiscalYearEnd + selectedYear.substring(2));
     }
 }
 
 function scrollToPrevYear() {
-    let yearNumber = parseInt(year);
-    console.log(yearNumber);
+    let yearNumber = parseInt(selectedYear);
     if (yearNumber > 2016) {
         yearNumber--;
-        year = yearNumber.toString();
-        gridOptions.api.ensureColumnVisible(fiscalYearStart + year.substring(2));
+        selectedYear = yearNumber.toString();
+        gridOptions.api.ensureColumnVisible(fiscalYearStart + selectedYear.substring(2));
     }
 }
 
