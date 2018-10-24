@@ -118,7 +118,7 @@ const gridOptions = {
     rowData,
     rowHeight: 77,
     enableRangeSelection: true,
-    // suppressHorizontalScroll: true,
+    suppressHorizontalScroll: true,
     rowSelection: 'multiple',
     components: {
         moodCellRenderer: MoodCellRenderer,
